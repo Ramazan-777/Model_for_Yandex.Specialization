@@ -1,2 +1,31 @@
-# Model_for_Yandex.Specialization
-This repository contains one of the models that performed best on the test data, completed as a final project.  Convolutional classification model imitating the EfficientNet architecture
+# DeepFake Detection using Custom EfficientNet
+
+![F1-Score](https://img.shields.io/badge/F1--Score-0.92251-success?style=for-the-badge)
+![PyTorch](https://img.shields.io/badge/PyTorch-%23EE4C2C.svg?style=for-the-badge&logo=PyTorch&logoColor=white)
+![Status](https://img.shields.io/badge/Status-Completed-blue?style=for-the-badge)
+
+## 📌 Описание проекта
+Данный проект посвящен разработке сверточной нейронной сети для бинарной классификации изображений на предмет наличия манипуляций (DeepFakes). 
+Основная цель — создать легковесную, но мощную модель, способную находить артефакты генерации даже в условиях сильного дисбаланса входных данных.
+
+## 📊 Результаты и Метрики
+В ходе тестирования модель показала выдающиеся результаты, особенно учитывая специфику датасета:
+* **Тестовый F1-Score: 0.92251**
+
+> **Примечание по данным:** Обучение проводилось на несбалансированном датасете с соотношением классов **10:1** (реальные изображения к дипфейкам). В таких условиях классическая метрика Accuracy является нерепрезентативной, поэтому основной упор был сделан на оптимизацию и контроль **F1-Score**.
+
+## 🏗 Архитектура модели: MyEfficientNet
+Модель вдохновлена архитектурой EfficientNet и построена на базе кастомных блоков **MBConv** (Mobile Inverted Bottleneck Convolution).
+
+
+
+### Основные особенности реализации:
+1.  **MBConv блоки:** Используют стратегию *Inverted Residuals*. Сначала каналы расширяются для извлечения богатых признаков, затем применяется глубинная свертка (Depthwise Conv) для экономии вычислительных ресурсов, и в конце — сжатие (Pointwise Conv).
+2.  **Активация SiLU (Swish):** Обеспечивает более плавное прохождение градиентов по сравнению с ReLU, что критично для глубоких сетей.
+3.  **Масштабируемость:** Конфигурация слоев (kernel size, expand ratio, repeats) подобрана так, чтобы эффективно обрабатывать детали лиц на разных масштабах.
+4.  **Global Classifier:** Использование `AdaptiveAvgPool2d` позволяет модели принимать на вход изображения разного размера и фокусироваться на глобальных признаках без привязки к конкретным координатам пикселей.
+
+## 🛠 Технологический стек
+* **Core:** `Python 3.10+`, `PyTorch`
+* **Layers:** `Conv2d`, `BatchNorm2d`, `SiLU`, `AdaptiveAvgPool2d`
+* **Optimization:** `Adam`
